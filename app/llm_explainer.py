@@ -9,7 +9,9 @@ import requests
 
 SAMBANOVA_URL = "https://api.sambanova.ai/v1/chat/completions"
 SAMBANOVA_MODEL = "Meta-Llama-3.1-8B-Instruct"
-DEFAULT_API_KEY = "98f5a48e-3d54-4215-ad4e-c8d222d5bc8c"
+
+# Read API key from environment variable (Render / local .env)
+DEFAULT_API_KEY = os.getenv("SAMBANOVA_API_KEY")
 
 # ── Local fallback templates ──────────────────────────────────────────────────
 FALLBACK = {
@@ -63,14 +65,16 @@ FALLBACK = {
 
 class LLMExplainer:
     def __init__(self, api_key: str = None):
-        # Always use the default key; user-supplied key is optional override
+        # Use explicit key if provided, otherwise use environment variable
         self.api_key = api_key or DEFAULT_API_KEY
 
     def explain(self, label: int, attack_type: str, payload: str, response_snippet: str) -> dict:
         """
         Generate vulnerability explanation.
-        Uses SambaNova Llama 3.1 if API key is available, otherwise uses local templates.
+        Uses SambaNova Llama 3.1 if API key is available,
+        otherwise falls back to local templates.
         """
+
         if not self.api_key:
             result = dict(FALLBACK.get(label, FALLBACK[0]))
             result["source"] = "Local Knowledge Base"
@@ -81,13 +85,13 @@ class LLMExplainer:
             f"Attack Payload Used: {payload}\n"
             f"Server Response Snippet: {response_snippet[:500]}\n\n"
             f"Respond ONLY with a valid JSON object with these exact keys:\n"
-            f"- issue: vulnerability name\n"
-            f"- severity: HIGH, MEDIUM, LOW, or CRITICAL\n"
-            f"- impact: what an attacker can do\n"
-            f"- reason: why the response indicates vulnerability\n"
-            f"- fix: step-by-step remediation\n"
-            f"- vulnerable_code: short code showing the vulnerability\n"
-            f"- secure_code: fixed version of that code\n"
+            f"- issue\n"
+            f"- severity\n"
+            f"- impact\n"
+            f"- reason\n"
+            f"- fix\n"
+            f"- vulnerable_code\n"
+            f"- secure_code\n"
         )
 
         try:
@@ -100,8 +104,14 @@ class LLMExplainer:
                 json={
                     "model": SAMBANOVA_MODEL,
                     "messages": [
-                        {"role": "system", "content": "You are a cybersecurity expert. Always respond with valid JSON only."},
-                        {"role": "user", "content": prompt}
+                        {
+                            "role": "system",
+                            "content": "You are a cybersecurity expert. Always respond with valid JSON only."
+                        },
+                        {
+                            "role": "user",
+                            "content": prompt
+                        }
                     ],
                     "temperature": 0.1
                 },
@@ -110,15 +120,21 @@ class LLMExplainer:
 
             if resp.status_code == 200:
                 content = resp.json()["choices"][0]["message"]["content"]
-                # Strip markdown code fences if present
+
                 content = content.strip()
+
                 if content.startswith("```"):
-                    content = content.split("```")[1]
-                    if content.startswith("json"):
-                        content = content[4:]
+                    parts = content.split("```")
+                    if len(parts) >= 2:
+                        content = parts[1]
+                        if content.startswith("json"):
+                            content = content[4:]
+
                 parsed = json.loads(content.strip())
                 parsed["source"] = f"SambaNova {SAMBANOVA_MODEL}"
                 return parsed
+
+            print(f"[LLM] API returned status {resp.status_code}")
 
         except Exception as e:
             print(f"[LLM] API error: {e}. Falling back to local templates.")
