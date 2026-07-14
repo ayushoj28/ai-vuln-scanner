@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Web Vulnerability Scanner</title>
+  <meta name="description" content="Educational AI-powered web vulnerability scanner using ML and SambaNova Llama 3.1 for SQLi, XSS, Prompt Injection, and Data Leakage detection.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <!-- Animated background grid -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <div class="app">
+
+    <!-- ── HEADER ─────────────────────────────────────────────── -->
+    <header class="header">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="logo-name">VulnScanner AI</div>
+          <div class="logo-sub">Educational Security Research Tool</div>
+        </div>
+      </div>
+      <div class="header-badges">
+        <span class="badge badge-green" id="model-status">Model Loading...</span>
+        <span class="badge badge-blue">Hosted & Local</span>
+      </div>
+    </header>
+
+    <!-- ── HERO / SCAN INPUT ──────────────────────────────────── -->
+    <section class="hero" id="section-hero">
+      <div class="hero-badge">V1.2.0 • Intelligent Engine Active</div>
+      <h1 class="hero-title">
+        Next-Gen Vulnerability Analysis<br>
+        <span class="gradient-text">Augmented by Adaptive AI & ML</span>
+      </h1>
+      <p class="hero-desc">
+        A high-performance automated scanner designed to crawl application forms, probe endpoints, actively audit input boundaries, and generate comprehensive LLM-explained remediation logs.
+      </p>
+
+      <!-- Scan form -->
+      <div class="scan-card">
+        <form id="scan-form">
+          <div class="input-row">
+            <div class="input-wrap">
+              <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              <input
+                type="url"
+                id="target-url"
+                class="url-input"
+                placeholder="Enter URL to test (e.g. http://demo.testfire.net)"
+                required
+                autocomplete="off"
+              >
+            </div>
+            <button type="submit" class="btn-scan" id="btn-scan">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+              Initialize Audit
+            </button>
+          </div>
+
+          <!-- AI badge -->
+          <div class="ai-badge-row">
+            <span class="ai-active-badge">
+              <span class="pulse-indicator"></span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+              SambaNova Meta-Llama-3.1 Explainer Online
+            </span>
+          </div>
+        </form>
+      </div>
+
+      <!-- Feature Grid Showcase -->
+      <div class="features-grid">
+        <div class="feature-item">
+          <div class="feature-icon f-sqli">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>
+          </div>
+          <div class="feature-name">SQL Injection Auditor</div>
+          <div class="feature-text">Injects boundary tests and monitors server response structures for SQL syntax errors.</div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon f-xss">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="12" y1="2" x2="12" y2="22"/></svg>
+          </div>
+          <div class="feature-name">Reflected XSS Engine</div>
+          <div class="feature-text">Validates if user-controlled scripts bypass encoding and render in client context.</div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon f-prompt">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
+          </div>
+          <div class="feature-name">AI Safety Auditor</div>
+          <div class="feature-text">Fuzzes AI chatbot endpoints for jailbreak vulnerability and context prompt exposure.</div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon f-data">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="feature-name">Data Leakage Guard</div>
+          <div class="feature-text">Scans output responses for exposed tokens, stack traces, hashes, and configuration keys.</div>
+        </div>
+      </div>
+
+      <!-- Warning disclaimer -->
+      <div class="disclaimer">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+        <span>Authorized security auditing only. Ensure you have permissions to test the entered domain.</span>
+      </div>
+    </section>
+
+    <!-- ── SCANNING PROGRESS PANEL ───────────────────────────── -->
+    <section class="scan-progress" id="section-progress" style="display:none">
+      <div class="progress-card">
+        <div class="progress-header">
+          <div class="spinner"></div>
+          <div>
+            <div class="progress-title">Scanning <span id="scanning-url" class="mono"></span></div>
+            <div class="progress-sub">Running active injection and ML analysis...</div>
+          </div>
+        </div>
+        <div class="pipeline-steps">
+          <div class="step" id="step-crawl">
+            <div class="step-dot"></div>
+            <div class="step-label">Crawling pages &amp; finding forms</div>
+          </div>
+          <div class="step" id="step-inject">
+            <div class="step-dot"></div>
+            <div class="step-label">Injecting SQLi / XSS / Prompt payloads</div>
+          </div>
+          <div class="step" id="step-ml">
+            <div class="step-dot"></div>
+            <div class="step-label">ML model classifying server responses</div>
+          </div>
+          <div class="step" id="step-llm">
+            <div class="step-dot"></div>
+            <div class="step-label">LLM generating remediation explanations</div>
+          </div>
+        </div>
+        <!-- Live console -->
+        <div class="console" id="console"></div>
+      </div>
+    </section>
+
+    <!-- ── RESULTS PANEL ──────────────────────────────────────── -->
+    <section class="results" id="section-results" style="display:none">
+
+      <!-- Summary bar -->
+      <div class="summary-bar">
+        <div class="summary-stat">
+          <div class="summary-val" id="sum-total">0</div>
+          <div class="summary-label">Vulnerabilities</div>
+        </div>
+        <div class="summary-stat">
+          <div class="summary-val red" id="sum-sqli">0</div>
+          <div class="summary-label">SQL Injection</div>
+        </div>
+        <div class="summary-stat">
+          <div class="summary-val orange" id="sum-xss">0</div>
+          <div class="summary-label">XSS</div>
+        </div>
+        <div class="summary-stat">
+          <div class="summary-val purple" id="sum-prompt">0</div>
+          <div class="summary-label">Prompt Injection</div>
+        </div>
+        <div class="summary-stat">
+          <div class="summary-val crimson" id="sum-data">0</div>
+          <div class="summary-label">Data Leakage</div>
+        </div>
+        <div class="summary-actions">
+          <button class="btn-secondary" id="btn-new-scan">New Scan</button>
+          <button class="btn-primary" id="btn-report">Download Report</button>
+        </div>
+      </div>
+
+      <!-- Vulnerability Risk Index Card -->
+      <div class="risk-card">
+        <div class="risk-info">
+          <div>
+            <div class="risk-title">Vulnerability Risk Index</div>
+            <div class="risk-status" id="risk-status">Secure</div>
+          </div>
+          <div class="risk-pct" id="risk-pct">0%</div>
+        </div>
+        <div class="risk-bar-bg">
+          <div class="risk-bar" id="risk-bar"></div>
+        </div>
+      </div>
+
+      <!-- Meta info -->
+      <div class="scan-meta" id="scan-meta"></div>
+
+      <!-- Vulnerability cards -->
+      <div id="vuln-list"></div>
+
+      <!-- No vulnerabilities found -->
+      <div id="no-vuln" style="display:none">
+        <div class="no-vuln-card">
+          <div class="no-vuln-icon">✅</div>
+          <div class="no-vuln-title">No Vulnerabilities Detected</div>
+          <div class="no-vuln-desc">The scanner found no SQL Injection, XSS, Prompt Injection, or Data Leakage vulnerabilities in the tested forms. This could mean the application is well-secured, or the forms did not return detectable error patterns.</div>
+        </div>
+      </div>
+
+    </section>
+
+  </div><!-- /app -->
+
+  <script src="/main.js"></script>
+</body>
+</html>
